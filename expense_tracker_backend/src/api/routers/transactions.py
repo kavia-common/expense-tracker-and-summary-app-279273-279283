@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import date
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status, Response
 from sqlalchemy.orm import Session
 
 from src.api.deps import get_current_user_id, get_db_dep
@@ -117,11 +117,11 @@ def delete_transaction(
     transaction_id: int,
     user_id: int = Depends(get_current_user_id),
     db: Session = Depends(get_db_dep),
-) -> None:
-    """Delete a transaction."""
+) -> Response:
+    """Delete a transaction and return 204 No Content."""
     svc = TransactionService(db)
     try:
         svc.delete(user_id, transaction_id)
     except PermissionError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Transaction not found")  # noqa: B904
-    return None
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

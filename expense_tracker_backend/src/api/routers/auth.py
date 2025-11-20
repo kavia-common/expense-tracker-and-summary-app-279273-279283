@@ -92,7 +92,13 @@ def refresh_token(request: Request, response: Response) -> TokenResponse:
     summary="Logout and clear refresh token cookie",
     status_code=204,
 )
-def logout_user(response: Response) -> None:
-    """Clear refresh token cookie to sign out."""
+def logout_user(response: Response) -> Response:
+    """Clear refresh token cookie to sign out.
+
+    Returns:
+        A 204 No Content response with cleared refresh cookie.
+    """
+    # Clear the httpOnly refresh cookie
     clear_refresh_cookie(response)
-    return None
+    # Return an explicit empty response to avoid including a JSON body with 204
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

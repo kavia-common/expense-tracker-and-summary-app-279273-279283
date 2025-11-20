@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status, Response
 from sqlalchemy.orm import Session
 
 from src.api.deps import get_current_user_id, get_db_dep
@@ -81,11 +81,11 @@ def delete_category(
     category_id: int,
     user_id: int = Depends(get_current_user_id),
     db: Session = Depends(get_db_dep),
-) -> None:
-    """Delete a category."""
+) -> Response:
+    """Delete a category and return 204 No Content."""
     svc = CategoryService(db)
     try:
         svc.delete(user_id, category_id)
     except PermissionError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")  # noqa: B904
-    return None
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
