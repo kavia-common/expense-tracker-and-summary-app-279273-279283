@@ -3,10 +3,16 @@ from __future__ import annotations
 import logging
 from typing import List
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from src.core.config import configure_logging, get_settings
+from src.api.routers.auth import router as auth_router
+from src.api.routers.users import router as users_router
+from src.api.routers.categories import router as categories_router
+from src.api.routers.transactions import router as transactions_router
+from src.api.routers.reports import router as reports_router
 
 settings = get_settings()
 configure_logging(settings.log_level)
@@ -14,6 +20,11 @@ logger = logging.getLogger(__name__)
 
 openapi_tags = [
     {"name": "Health", "description": "Service health and diagnostics."},
+    {"name": "Auth", "description": "Authentication endpoints for login, refresh, logout."},
+    {"name": "Users", "description": "User profile and management."},
+    {"name": "Categories", "description": "Manage expense categories."},
+    {"name": "Transactions", "description": "CRUD operations for expenses."},
+    {"name": "Reports", "description": "Aggregated reporting endpoints."},
 ]
 
 app = FastAPI(
@@ -45,3 +56,17 @@ def health_check():
         JSON with a basic message to indicate service availability.
     """
     return {"message": "Healthy"}
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.exception("Unhandled error on %s %s: %s", request.method, request.url.path, exc)
+    return JSONResponse(status_code=500, content={"detail": "Internal Server Error"})
+
+
+# Include routers
+app.include_router(auth_router)
+app.include_router(users_router)
+app.include_router(categories_router)
+app.include_router(transactions_router)
+app.include_router(reports_router)

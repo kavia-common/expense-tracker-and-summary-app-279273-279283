@@ -38,8 +38,14 @@ class Settings:
     cors_allow_headers: str = os.getenv("CORS_ALLOW_HEADERS", "*")
     # API meta
     api_version: str = os.getenv("API_VERSION", "0.1.0")
-    # Security
+    # Security / Auth
     csrf_enabled: bool = os.getenv("CSRF_ENABLED", "false").lower() == "true"
+    secret_key: Optional[str] = os.getenv("SECRET_KEY")
+    access_token_expires_min: int = int(os.getenv("ACCESS_TOKEN_EXPIRES_MIN", "15"))
+    refresh_token_expires_days: int = int(os.getenv("REFRESH_TOKEN_EXPIRES_DAYS", "7"))
+    refresh_cookie_name: str = os.getenv("REFRESH_COOKIE_NAME", "rt")
+    cookie_secure: bool = os.getenv("COOKIE_SECURE", "true").lower() == "true"
+    cookie_samesite: str = os.getenv("COOKIE_SAMESITE", "lax").lower()
 
 
 def get_settings() -> Settings:
