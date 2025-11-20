@@ -117,7 +117,7 @@ def delete_transaction(
     transaction_id: int,
     user_id: int = Depends(get_current_user_id),
     db: Session = Depends(get_db_dep),
-) -> Response:
+):
     """Delete a transaction and return 204 No Content."""
     svc = TransactionService(db)
     try:

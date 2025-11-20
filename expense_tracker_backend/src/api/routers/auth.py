@@ -92,7 +92,7 @@ def refresh_token(request: Request, response: Response) -> TokenResponse:
     summary="Logout and clear refresh token cookie",
     status_code=204,
 )
-def logout_user(response: Response) -> Response:
+def logout_user(response: Response):
     """Clear refresh token cookie to sign out.
 
     Returns:

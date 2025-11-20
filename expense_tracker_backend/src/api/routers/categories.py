@@ -81,7 +81,7 @@ def delete_category(
     category_id: int,
     user_id: int = Depends(get_current_user_id),
     db: Session = Depends(get_db_dep),
-) -> Response:
+):
     """Delete a category and return 204 No Content."""
     svc = CategoryService(db)
     try:
