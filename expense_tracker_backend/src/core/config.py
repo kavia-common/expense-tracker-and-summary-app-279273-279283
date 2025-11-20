@@ -32,6 +32,7 @@ class Settings:
         ),
     )
     # CORS
+    # Comma-separated list. Example: "http://localhost:3000,https://myapp.example.com"
     cors_allow_origins: str = os.getenv("CORS_ALLOW_ORIGINS", "*")
     cors_allow_credentials: bool = os.getenv("CORS_ALLOW_CREDENTIALS", "true").lower() == "true"
     cors_allow_methods: str = os.getenv("CORS_ALLOW_METHODS", "*")

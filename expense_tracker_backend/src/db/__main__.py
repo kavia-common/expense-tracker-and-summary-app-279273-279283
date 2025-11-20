@@ -1,4 +1,12 @@
-"""Entry point to initialize the database: `python -m src.db`."""
+"""Entry point to initialize the database: `python -m src.db`.
+
+This will:
+- Create all tables if they do not exist.
+- Seed demo data idempotently (safe to re-run).
+Use flags:
+  --no-schema  to skip schema creation
+  --no-seed    to skip seeding
+"""
 from __future__ import annotations
 
 import argparse

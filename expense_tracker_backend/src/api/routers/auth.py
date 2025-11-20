@@ -37,6 +37,7 @@ def register_user(payload: RegisterRequest, response: Response, db: Session = De
         user_id, access, refresh, access_exp, refresh_exp = service.login(email=payload.email, password=payload.password)
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))  # noqa: B904
+    # Set httpOnly refresh cookie; ensure CORS allow-credentials and frontend uses credentials:'include'
     set_refresh_cookie(response, refresh, max_age=refresh_exp)
     return TokenResponse(access_token=access, expires_in=access_exp)
 

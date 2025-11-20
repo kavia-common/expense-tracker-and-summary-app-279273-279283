@@ -57,6 +57,19 @@ def health_check():
     """
     return {"message": "Healthy"}
 
+@app.get(
+    "/health",
+    tags=["Health"],
+    summary="Health Status",
+)
+def health_status():
+    """Lightweight health endpoint for probes and uptime checks.
+
+    Returns:
+        JSON object indicating service status.
+    """
+    return {"status": "ok"}
+
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
