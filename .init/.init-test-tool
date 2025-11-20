@@ -1,0 +1,4 @@
+{
+    "command": "pytest",
+    "working_directory": "/home/kavia/workspace/code-generation/expense-tracker-and-summary-app-279273-279283/expense_tracker_backend"
+}
